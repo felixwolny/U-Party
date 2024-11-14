@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #cfa2a2;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    font-size: bold;
+    margin-top: 25px;
+    font-size: 34px;
+}
+h4 {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 46px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 96%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: medium;
+    margin-top: 14px;
+}
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+}
+button {
+    padding: 10px 15px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    display: block;
+    font-size: bold;
+    margin-top: 50px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    color: black;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+@keyframes newRowAnimation {
+    0% {
+        transform: scale(1);
+        filter: blur(10px);
+
+        opacity: 1;
+    }
+    50%{
+        transform: scale(1.5);
+
+        filter: blur(0px);
+    }
+    100% {
+        transform: scale(1);
+
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+.new-row {
+    animation: newRowAnimation 1s ease;
+}

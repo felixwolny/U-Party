@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wünsch dir was!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <img src="logo.png">
+    <h1>Wünsch dir was!</h1>
+    <h4>Dein Song für die Warteschlange. <br>Von der SMV, für dich.</h4>
+    <form id="songForm">
+
+        <input type="text" id="songName" required placeholder="Dein Song"><br>
+        
+
+        <input type="text" id="userName" placeholder="Dein Name (oder leer)"><br>
+        
+        <button type="submit">Senden!</button>
+    </form>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3ASIwqKSgOvCT58i_SMlgW-_Hu9rfmFk",
+            authDomain: "u-party-710cd.firebaseapp.com",
+            projectId: "u-party-710cd",
+            storageBucket: "u-party-710cd.appspot.com",
+            messagingSenderId: "101948586331",
+            appId: "1:101948586331:web:11aaccc1d01ace88f5027e",
+            measurementId: "G-FFV7QPG6V5"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        document.getElementById("songForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const songName = document.getElementById("songName").value;
+            const userName = document.getElementById("userName").value || "Anonymous";
+            
+            try {
+                await addDoc(collection(db, "songs"), {
+                    song: songName,
+                    user: userName,
+                    timestamp: serverTimestamp()
+                });
+                alert("Wuhuu 🥳 Bald kommt dein Song!");
+                document.getElementById("songForm").reset();
+            } catch (error) {
+                console.error("Manno, irgendein Fehler ist aufgetreten...: ", error);
+            }
+        });
+    </script>
+</body>
+</html>

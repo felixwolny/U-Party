@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Liedervorschläge</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Song</th>
+                <th>Name</th>
+                <th>Vor</th>
+                <th>Anzahl</th>
+            </tr>
+        </thead>
+        <tbody id="songTable"></tbody>
+    </table>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3ASIwqKSgOvCT58i_SMlgW-_Hu9rfmFk",
+            authDomain: "u-party-710cd.firebaseapp.com",
+            projectId: "u-party-710cd",
+            storageBucket: "u-party-710cd.appspot.com",
+            messagingSenderId: "101948586331",
+            appId: "1:101948586331:web:11aaccc1d01ace88f5027e",
+            measurementId: "G-FFV7QPG6V5"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        function timeSince(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            const minutes = Math.floor(seconds / 60);
+            return minutes > 0 ? `${minutes} Minute(n)` : "Jetzt";
+        }
+
+        const songTable = document.getElementById("songTable");
+        const q = query(collection(db, "songs"), orderBy("timestamp", "desc"));
+
+        let firstLoad = true;
+
+        function updateTable() {
+            onSnapshot(q, (snapshot) => {
+                const songCount = {};
+                songTable.innerHTML = "";
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const songName = data.song;
+                    const userName = data.user || "Anonymous";
+                    const timestamp = data.timestamp ? data.timestamp.toDate() : new Date();
+
+                    if (!songCount[songName]) songCount[songName] = { count: 0, lastEntry: null };
+                    songCount[songName].count++;
+                    songCount[songName].lastEntry = { songName, userName, timestamp };
+                });
+
+                for (const song in songCount) {
+                    const { count, lastEntry } = songCount[song];
+                    const row = document.createElement("tr");
+                    row.classList.add("new-row");  // Add class for animation
+                    row.innerHTML = `
+                        <td>${lastEntry.songName}</td>
+                        <td>${lastEntry.userName}</td>
+                        <td>${timeSince(lastEntry.timestamp)}</td>
+                        <td>${count}</td>
+                    `;
+                    songTable.appendChild(row);
+                }
+                
+                if (!firstLoad) {
+                  
+                    // Remove animation class after it runs once
+                    setTimeout(() => {
+                        document.querySelectorAll('.new-row').forEach(row => row.classList.remove('new-row'));
+                    }, 4000); // Adjust timing to match the CSS animation duration
+                }
+                firstLoad = false;
+                
+            });
+        }
+
+        // Update data every second
+        setInterval(updateTable, 4000);
+    </script>
+</body>
+</html>
