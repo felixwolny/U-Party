@@ -82,7 +82,7 @@
                     // Remove animation class after it runs once
                     setTimeout(() => {
                         document.querySelectorAll('.new-row').forEach(row => row.classList.remove('new-row'));
-                    }, 4000); // Adjust timing to match the CSS animation duration
+                    }, 2000); // Adjust timing to match the CSS animation duration
                 }
                 firstLoad = false;
                 
@@ -90,7 +90,7 @@
         }
 
         // Update data every second
-        setInterval(updateTable, 4000);
+        setInterval(updateTable, 2000);
     </script>
 </body>
 </html>
